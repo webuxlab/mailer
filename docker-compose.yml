@@ -30,6 +30,8 @@ services:
     environment:
       VUE_APP_IO_URL: "https://mailer.webuxlab.com/"
       SERVER_NAME: mailer.webuxlab.com
+      VIRTUAL_HOST: mailer.webuxlab.com # Nginx jwilder
+      LETSENCRYPT_HOST: mailer.webuxlab.com # Nginx jwilder
     ports:
       - "80"
       - "443"

@@ -10,7 +10,11 @@
         <Loading />
       </div>
       <div class="mails">
-        <div class="shadow p-3 mb-5 bg-white rounded" v-for="mail in mails" :key="mail.id">
+        <div
+          class="shadow p-3 mb-5 bg-white rounded"
+          v-for="mail in mails"
+          :key="mail.id"
+        >
           <div class="card">
             <div class="card-body">
               <div class="card-title">
