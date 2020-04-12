@@ -2,19 +2,42 @@
   <div id="emails" class="container">
     <div class="text-center mx-auto mt-2">
       <h1 class="text-center">Emails</h1>
-      <div class="sendEmail">
-        <button @click="SendEmail">Send a Test Email</button>
+      <div class="row messages">
+        <div class="text-center mx-auto mb-5">
+          <div v-if="successMessage" class="alert alert-success">
+            <p>{{ successMessage }}</p>
+          </div>
+          <div v-if="errorMessage" class="alert alert-warning">
+            <p>{{ errorMessage }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row sendEmail">
+        <div class="text-center mx-auto">
+          <button class="btn btn-primary mr-5" @click="SendEmail">Send a Test Email</button>
+          <button class="btn btn-secondary mr-5" @click="showInfo = !showInfo">Show Information</button>
+          <button class="btn btn-warning" @click="ResetEmails">Reset</button>
+        </div>
       </div>
       <hr />
-      <div class="isLoading" v-if="isLoading">
-        <Loading />
+      <div v-if="showInfo" class="showInfo">
+        <p
+          class="lead"
+        >When deployed locally, you can send emails using nodemailer directly to this fake SMTP Server.</p>
+        <pre class="text-left border p-3">{{ info }}</pre>
+      </div>
+      <div class="row isLoading" v-if="isLoading">
+        <div class="text-center mx-auto mt-2">
+          <Loading />
+        </div>
+      </div>
+      <div class="row waitingForEmail" v-if="mails.length === 0">
+        <div class="text-center mx-auto mt-2">
+          <p class="lead">Waiting for new Emails ...</p>
+        </div>
       </div>
       <div class="mails">
-        <div
-          class="shadow p-3 mb-5 bg-white rounded"
-          v-for="mail in mails"
-          :key="mail.id"
-        >
+        <div class="shadow p-3 mb-5 bg-white rounded" v-for="mail in mails" :key="mail.id">
           <div class="card">
             <div class="card-body">
               <div class="card-title">
@@ -66,18 +89,50 @@ export default {
   components: {
     Loading
   },
+  data() {
+    return {
+      showInfo: false,
+      info: `
+      const transporter = nodemailer.createTransport({
+        host: "127.0.0.1",
+        port: 2525,
+        secure: false
+      });
+
+      const email = {
+        from: "test@here.local",
+        to: "test@somewhere.local",
+        subject: "This is a test",
+        text: "Did you receive my email ?",
+        html: "<h1>Hey !</h1><p>Did you receive my email ?</p>",
+      };
+      transporter.sendMail(email, (err, sent) => {
+        if (err) {
+          console.error(err);
+        }
+        console.info(sent);
+      });`
+    };
+  },
   computed: {
     ...mapGetters(["isLoading", "successMessage", "errorMessage", "mails"])
   },
   methods: {
+    ResetEmails() {
+      this.$store.dispatch("resetEmails");
+    },
     SendEmail() {
+      this.$store.dispatch("resetMessages");
       this.$store.dispatch("setLoading");
       this.$socket.client.emit("SendEmail", callback => {
         if (callback) {
-          console.log("Success !");
+          this.$store.dispatch("setSuccess", "Success !");
         } else {
-          console.error("Error !");
+          this.$store.dispatch("setError", "Error !");
         }
+        setTimeout(() => {
+          this.$store.dispatch("resetMessages");
+        }, 8000);
       });
     }
   },

@@ -1,13 +1,17 @@
 const state = {
   mails: [],
-  mailInit: false
+  mailInit: false,
 };
 
 const mutations = {
   INIT_MAIL(state, mail) {
-    state.mails.push(mail);
+    state.mails.unshift(mail);
     state.mailInit = true;
-  }
+  },
+  RESET_MAIL(state) {
+    state.mails = [];
+    state.mailInit = false;
+  },
 };
 
 const actions = {
@@ -15,21 +19,25 @@ const actions = {
     commit("INIT_MAIL", data);
     dispatch("doneLoading");
   },
-  socket_emailSent({ dispatch }) {
-    dispatch("setSuccess", "Email will be retrieved soon");
+  socket_emailSent({ dispatch }, data) {
+    dispatch("setSuccess", data);
     dispatch("doneLoading");
-  }
+  },
+  resetEmails({ commit, dispatch }) {
+    dispatch("setLoading");
+    commit("RESET_MAIL");
+  },
 };
 
 const getters = {
-  mails: state => {
+  mails: (state) => {
     return state.mails;
-  }
+  },
 };
 
 export default {
   actions,
   mutations,
   state,
-  getters
+  getters,
 };

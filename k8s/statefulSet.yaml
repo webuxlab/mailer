@@ -25,17 +25,18 @@ spec:
           envFrom:
             - configMapRef:
                 name: backend
-          image: docker-registry.docker-registry.192.168.2.252.xip.io/jabod-backend:v0.2.1
+          image: mailer-backend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 3030
+            - containerPort: 2525
           readinessProbe:
             httpGet:
-              path: /api/v1/healthcheck
+              path: /healthcheck
               port: 3030
               httpHeaders:
                 - name: Origin
-                  value: http://mailer.webux.lab
+                  value: http://mailer.webuxlab.com
             initialDelaySeconds: 30
             periodSeconds: 5
 
@@ -62,19 +63,19 @@ spec:
         app: frontend
     spec:
       containers:
-        - image: docker-registry.docker-registry.192.168.2.252.xip.io/jabod-frontend:v0.2.1
+        - image: mailer-frontend:latest
           imagePullPolicy: Always
           name: frontend
           env:
             - name: SERVER_NAME
-              value: mailer.webux.lab
+              value: mailer.webuxlab.com
             - name: VUE_APP_IO_URL
-              value: https://mailer.webux.lab:3030
+              value: https://mailer.webuxlab.com/
           ports:
             - containerPort: 80
           volumeMounts:
             - mountPath: /var/log/nginx/
-              name: jabod-0-2-1-frontend-logs
+              name: mailer-frontend-logs
           readinessProbe:
             httpGet:
               path: /
@@ -83,7 +84,7 @@ spec:
             periodSeconds: 5
   volumeClaimTemplates:
     - metadata:
-        name: jabod-0-2-1-frontend-logs
+        name: mailer-frontend-logs
       spec:
         accessModes: ["ReadWriteMany"]
         resources:
@@ -91,4 +92,4 @@ spec:
             storage: 5Gi
         selector:
           matchLabels:
-            name: jabod-0-2-1-frontend-log
+            name: mailer-frontend-log

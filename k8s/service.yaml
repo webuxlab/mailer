@@ -10,7 +10,9 @@ spec:
   clusterIP: None
   ports:
     - port: 3030
-      name: server
+      name: api_endpoint
+    - port: 2525
+      name: fake_smtp
   selector:
     app: backend
 

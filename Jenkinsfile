@@ -7,7 +7,7 @@ pipeline {
                 }
 
                 stage('Build Backend') {
-                    steps { sh 'docker build --no-cache -f ./smtp-server/Dockerfile -t mailer-backend ./smtp-server' }
+                    steps { sh 'docker build --no-cache -f ./backend/Dockerfile -t mailer-backend ./backend' }
                 }
             }
         }

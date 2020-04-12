@@ -3,15 +3,15 @@ const state = {
   error: "",
   global: {
     error: "",
-    success: ""
-  }
+    success: "",
+  },
 };
 
 const mutations = {
   SET_SUCCESS: (state, message) => {
     state.success = message;
   },
-  RESET_SUCCESS: state => {
+  RESET_SUCCESS: (state) => {
     state.success = "";
   },
   SET_ERROR: (state, error) => {
@@ -25,7 +25,7 @@ const mutations = {
       state.error = "An error occured";
     }
   },
-  RESET_ERROR: state => {
+  RESET_ERROR: (state) => {
     state.error = "";
   },
   SET_GLOBAL_ERROR: (state, message) => {
@@ -33,15 +33,11 @@ const mutations = {
   },
   SET_GLOBAL_SUCCESS: (state, message) => {
     state.global.success = message;
-  }
+  },
 };
 
 const actions = {
   socket_gotError: ({ commit, dispatch }, message) => {
-    commit("SET_ERROR", message);
-    dispatch("doneLoading");
-  },
-  socket_profile_gotError: ({ commit, dispatch }, message) => {
     commit("SET_ERROR", message);
     dispatch("doneLoading");
   },
@@ -66,27 +62,27 @@ const actions = {
   },
   setGlobalSuccess: ({ commit }, message) => {
     commit("SET_GLOBAL_SUCCESS", message);
-  }
+  },
 };
 
 const getters = {
-  successMessage: state => {
+  successMessage: (state) => {
     return state.success;
   },
-  errorMessage: state => {
+  errorMessage: (state) => {
     return state.error;
   },
-  globalError: state => {
+  globalError: (state) => {
     return state.global.error;
   },
-  globalSuccess: state => {
+  globalSuccess: (state) => {
     return state.global.success;
-  }
+  },
 };
 
 export default {
   state,
   mutations,
   actions,
-  getters
+  getters,
 };

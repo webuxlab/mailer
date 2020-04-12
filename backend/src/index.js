@@ -22,8 +22,8 @@ async function LoadApp() {
     console.log(`New User ${socket.id}`);
 
     socket.on("SendEmail", (fn) => {
-      Send();
-      socket.emit("emailSent");
+      Send(socket);
+
       fn(true);
     });
 

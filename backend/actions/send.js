@@ -1,4 +1,4 @@
-module.exports = () => {
+module.exports = (socket) => {
   // To test the fake SMTP Server
 
   "use strict";
@@ -26,12 +26,13 @@ module.exports = () => {
     transporter.sendMail(email, (err, sent) => {
       if (err) {
         console.error(err);
+        socket.emit("gotError", err);
       }
       console.info(sent);
-      return true;
+      socket.emit("emailSent", JSON.stringify(sent));
     });
   } catch (e) {
     console.error(e);
-    process.exit(1);
+    socket.emit("gotError", e);
   }
 };
