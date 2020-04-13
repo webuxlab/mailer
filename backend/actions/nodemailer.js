@@ -19,7 +19,7 @@ module.exports = (socket) => {
     const email = {
       from: "test@here.local",
       to: "test@somewhere.local",
-      subject: "This is a test",
+      subject: "This is a test using nodemailer",
       text: "Did you receive my email ?",
       html: "<h1>Hey !</h1><p>Did you receive my email ?</p>",
     };

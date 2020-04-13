@@ -7,8 +7,8 @@ For test and local SMTP server
 The logs of Nginx are stored in `/srv/JAFSS/nginx/logs`
 
 ```bash
-docker build --no-cache -f ./frontend/Dockerfile -t mailer-frontend ./frontend
-docker build --no-cache -f ./backend/Dockerfile -t mailer-backend ./backend
+docker build -f ./frontend/Dockerfile -t mailer-frontend ./frontend
+docker build -f ./backend/Dockerfile -t mailer-backend ./backend
 
 docker-compose up -d
 ```

@@ -14,7 +14,14 @@
       </div>
       <div class="row sendEmail">
         <div class="text-center mx-auto">
-          <button class="btn btn-primary mr-5" @click="SendEmail">Send a Test Email</button>
+          <button
+            class="btn btn-primary mr-5"
+            @click="SendEmailWithWebuxmailer"
+          >Send a Test Email with Webux Mailer</button>
+          <button
+            class="btn btn-primary mr-5"
+            @click="SendEmailWithNodemailer"
+          >Send a Test Email with Nodemailer</button>
           <button class="btn btn-secondary mr-5" @click="showInfo = !showInfo">Show Information</button>
           <button class="btn btn-warning" @click="ResetEmails">Reset</button>
         </div>
@@ -24,6 +31,10 @@
         <p
           class="lead"
         >When deployed locally, you can send emails using nodemailer directly to this fake SMTP Server.</p>
+        <h2>Using WebuxMailer (A wrapper around Nodemailer)</h2>
+        <pre class="text-left border p-3">{{ infoWebuxMail }}</pre>
+        <hr />
+        <h2>Using Nodemailer Directly</h2>
         <pre class="text-left border p-3">{{ info }}</pre>
       </div>
       <div class="row isLoading" v-if="isLoading">
@@ -93,6 +104,8 @@ export default {
     return {
       showInfo: false,
       info: `
+      const nodemailer = require("nodemailer");
+
       const transporter = nodemailer.createTransport({
         host: "127.0.0.1",
         port: 2525,
@@ -111,7 +124,39 @@ export default {
           console.error(err);
         }
         console.info(sent);
-      });`
+      });`,
+      infoWebuxMail: `
+      const WebuxMailer = require("@studiowebux/mailer");
+
+      const opts = {
+        isEnabled: true,
+        host: "127.0.0.1",
+        port: 2525,
+        secure: false,
+      };
+
+      const webuxMailer = new WebuxMailer(opts);
+
+      // Data structure : https://nodemailer.com/message/
+      const data = {
+        from: "test@from.local",
+        to: ["test1@to.local", "test2@to.local"],
+        cc: ["test3@cc.local", "test5@cc.local", "test6@cc.local"],
+        subject: "Testing the webux mailer",
+        html: "<p>Hello World !</p>",
+        text: "Hello World !",
+      };
+
+      webuxMailer
+        .Sendmail(data)
+        .then((info) => {
+          console.log(info);
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+      };
+      `
     };
   },
   computed: {
@@ -121,10 +166,24 @@ export default {
     ResetEmails() {
       this.$store.dispatch("resetEmails");
     },
-    SendEmail() {
+    SendEmailWithNodemailer() {
       this.$store.dispatch("resetMessages");
       this.$store.dispatch("setLoading");
-      this.$socket.client.emit("SendEmail", callback => {
+      this.$socket.client.emit("SendEmailWithNodemailer", callback => {
+        if (callback) {
+          this.$store.dispatch("setSuccess", "Success !");
+        } else {
+          this.$store.dispatch("setError", "Error !");
+        }
+        setTimeout(() => {
+          this.$store.dispatch("resetMessages");
+        }, 8000);
+      });
+    },
+    SendEmailWithWebuxmailer() {
+      this.$store.dispatch("resetMessages");
+      this.$store.dispatch("setLoading");
+      this.$socket.client.emit("SendEmailWithWebuxmailer", callback => {
         if (callback) {
           this.$store.dispatch("setSuccess", "Success !");
         } else {

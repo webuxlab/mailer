@@ -5,7 +5,8 @@ const app = express();
 const server = require("http").createServer(app);
 const cors = require("cors");
 
-const Send = require("../actions/send");
+const Nodemailer = require("../actions/nodemailer");
+const WebuxMailer = require("../actions/webuxmailer");
 
 const PORT = process.env.PORT || 3030;
 
@@ -21,8 +22,14 @@ async function LoadApp() {
   socketIO.Standalone().on("connect", (socket) => {
     console.log(`New User ${socket.id}`);
 
-    socket.on("SendEmail", (fn) => {
-      Send(socket);
+    socket.on("SendEmailWithNodemailer", (fn) => {
+      Nodemailer(socket);
+
+      fn(true);
+    });
+
+    socket.on("SendEmailWithWebuxmailer", (fn) => {
+      WebuxMailer(socket);
 
       fn(true);
     });
