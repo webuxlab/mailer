@@ -11,12 +11,12 @@
   "author": "Studio Webux S.E.N.C",
   "license": "MIT",
   "dependencies": {
-    "@studiowebux/mailer": "^2.0.0",
-    "@studiowebux/socket": "^2.0.0",
+    "@studiowebux/mailer": "^2.0.3",
+    "@studiowebux/socket": "^2.0.11",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mailparser": "^2.7.7",
-    "nodemailer": "^6.4.6",
-    "smtp-server": "^3.6.0"
+    "mailparser": "^2.8.1",
+    "nodemailer": "^6.4.11",
+    "smtp-server": "^3.7.0"
   }
 }
