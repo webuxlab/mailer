@@ -6,6 +6,18 @@ pipeline {
     }
 
     stages {
+        stage('Backend Dependencies') {
+            steps {
+                sh 'cd backend/ && npm install'
+            }
+        }
+
+        stage('Frontend Dependencies') {
+            steps {
+                sh 'cd frontend/app/ && npm install'
+            }
+        }
+
         stage('Lint Backend') {
             steps {
                 sh 'cd backend/ && npm run-script lint'
