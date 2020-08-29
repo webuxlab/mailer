@@ -1,5 +1,45 @@
 pipeline {
+    agent {
+        node {
+            label 'docker'
+        }
+    }
+
     stages {
+        stage('Lint Backend') {
+            steps {
+                sh 'cd backend/ && npm run-script lint'
+            }
+        }
+
+        stage('Lint Frontend') {
+            steps {
+                sh 'cd frontend/app/ && npm run-script lint'
+            }
+        }
+
+        stage('Backend Code Analysis') {
+            steps {
+                script {
+                def scannerHome = tool 'sonarqube';
+                    withSonarQubeEnv("sonarqube") {
+                    sh "cd backend/ && ${tool("sonarqube")}/bin/sonar-scanner"            
+                    }
+                }
+            }
+        }
+
+        stage('Frontend Code Analysis') {
+            steps {
+                script {
+                def scannerHome = tool 'sonarqube';
+                    withSonarQubeEnv("sonarqube") {
+                    sh "cd frontend/app/ && ${tool("sonarqube")}/bin/sonar-scanner"            
+                    }
+                }
+            }
+        }
+
         stage('Build image') {
             parallel {
                 stage('Build Frontend') {

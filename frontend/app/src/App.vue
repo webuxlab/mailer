@@ -40,13 +40,14 @@ export default {
 .page-wrap {
   min-height: 100%;
   /* equal to footer height */
-  margin-bottom: -60px; 
+  margin-bottom: -60px;
 }
 .page-wrap:after {
   content: "";
   display: block;
 }
-.footer, .page-wrap:after {
-  height: 60px; 
+.footer,
+.page-wrap:after {
+  height: 60px;
 }
 </style>

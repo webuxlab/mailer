@@ -1,4 +1,4 @@
 // vue.config.js
 module.exports = {
-  productionSourceMap: false,
+  productionSourceMap: false
 };

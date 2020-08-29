@@ -17,20 +17,24 @@
           <button
             class="btn btn-primary mr-5"
             @click="SendEmailWithWebuxmailer"
-          >Send a Test Email with Webux Mailer</button>
-          <button
-            class="btn btn-primary mr-5"
-            @click="SendEmailWithNodemailer"
-          >Send a Test Email with Nodemailer</button>
-          <button class="btn btn-secondary mr-5" @click="showInfo = !showInfo">Show Information</button>
+          >
+            Send a Test Email with Webux Mailer
+          </button>
+          <button class="btn btn-primary mr-5" @click="SendEmailWithNodemailer">
+            Send a Test Email with Nodemailer
+          </button>
+          <button class="btn btn-secondary mr-5" @click="showInfo = !showInfo">
+            Show Information
+          </button>
           <button class="btn btn-warning" @click="ResetEmails">Reset</button>
         </div>
       </div>
       <hr />
       <div v-if="showInfo" class="showInfo">
-        <p
-          class="lead"
-        >When deployed locally, you can send emails using nodemailer directly to this fake SMTP Server.</p>
+        <p class="lead">
+          When deployed locally, you can send emails using nodemailer directly
+          to this fake SMTP Server.
+        </p>
         <h2>Using WebuxMailer (A wrapper around Nodemailer)</h2>
         <pre class="text-left border p-3">{{ infoWebuxMail }}</pre>
         <hr />
@@ -48,7 +52,11 @@
         </div>
       </div>
       <div class="mails">
-        <div class="shadow p-3 mb-5 bg-white rounded" v-for="mail in mails" :key="mail.id">
+        <div
+          class="shadow p-3 mb-5 bg-white rounded"
+          v-for="mail in mails"
+          :key="mail.id"
+        >
           <div class="card">
             <div class="card-body">
               <div class="card-title">

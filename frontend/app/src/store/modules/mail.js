@@ -1,6 +1,6 @@
 const state = {
   mails: [],
-  mailInit: false,
+  mailInit: false
 };
 
 const mutations = {
@@ -11,7 +11,7 @@ const mutations = {
   RESET_MAIL(state) {
     state.mails = [];
     state.mailInit = false;
-  },
+  }
 };
 
 const actions = {
@@ -26,18 +26,18 @@ const actions = {
   resetEmails({ commit, dispatch }) {
     dispatch("setLoading");
     commit("RESET_MAIL");
-  },
+  }
 };
 
 const getters = {
-  mails: (state) => {
+  mails: state => {
     return state.mails;
-  },
+  }
 };
 
 export default {
   actions,
   mutations,
   state,
-  getters,
+  getters
 };
